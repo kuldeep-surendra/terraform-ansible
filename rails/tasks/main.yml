@@ -1,0 +1,6 @@
+---
+- include: app.yml tags=user
+- include: rbenv.yml tags=ruby
+- include: nodejs.yml tags=nodejs
+- include: apache.yml tags=apache
+- include: db.yml tags=db

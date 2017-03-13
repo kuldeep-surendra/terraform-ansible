@@ -1,0 +1,50 @@
+---
+
+- name: 'update'
+  yum: name=* state=latest
+  sudo: yes
+
+# - name: 'rpm'
+#   # yum:  pkg=http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-centos94-9.4-1.noarch.rpm state=present
+#   command: yum install -ivh http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+#   sudo: yes
+
+- name: 'install postgresql'
+  yum: pkg={{ item }} state=present
+  with_items:
+  - postgresql-server 
+  - postgresql-contrib
+  sudo: yes
+# - name: "Stage 1: install repository package"
+#   yum: 
+#     state: present
+#     pkg: "{{ item }}"
+#   with_items: 
+#     - http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-redhat94-9.4-1.noarch.rpm
+
+# - name: "Stage 1: install postgresql packages"
+#   yum: 
+#     state: latest
+#     pkg: "{{ item }}"
+#   with_items:
+#     - postgresql{{ postgresql_version |replace('.', '') }}-server
+#     - python-psycopg2
+
+# - name: "Stage 1: install postgresql contrib package"
+#   yum: 
+#     state: latest
+#     pkg: postgresql{{ postgresql_version |replace('.', '') }}-contrib
+#   when: postgresql_contrib
+
+
+- name: 'initdb'
+  command: postgresql-setup initdb
+  sudo: yes
+
+- name: 'enable postgresql'
+  command: systemctl enable postgresql
+  sudo: yes
+
+- name: 'start postgresql'
+  command: systemctl start postgresql
+  sudo: yes

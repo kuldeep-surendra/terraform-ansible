@@ -1,0 +1,15 @@
+---
+# vars file for ansible-rails
+user: deploy
+home: '/home/deploy'
+name: 'firstapp'
+application: '{{ home }}/web/root'
+ruby_version: '2.3.1'
+rbenv_root: '{{ home }}/.rbenv'
+nodejs_branch: "node_4.x"
+nodejs_apt_state: "latest"
+passenger_pkgs_state: "latest"
+passenger_webserver: "nginx"
+postgresql_repo_RedHat:
+  - { version: "9.4", repo: "http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-redhat94-9.4-1.noarch.rpm" }
+postgresql_version: 9.4

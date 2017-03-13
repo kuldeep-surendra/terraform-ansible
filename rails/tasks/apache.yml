@@ -1,0 +1,96 @@
+---
+  - name: 'yum | update'
+    yum: name=* state=present
+    sudo: yes
+
+  - name: install epel-release
+    yum: name=epel-release state=present
+    sudo: yes 
+
+  - name: install nginx
+    yum: name=nginx state=present
+    sudo: yes 
+
+  - name: start nginx
+    service: name=nginx state=started
+    sudo: yes
+
+  # - name: yum - add key for passenger repos
+  #   yum_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x561F9B9CAC40B2F7 id=AC40B2F7 state=present
+  #   sudo: yes
+
+  # - name: yum - add support for https
+  #   yum: pkg={{ item }} state={{ passenger_pkgs_state }} update_cache=yes cache_valid_time=3600
+  #   with_items:
+  #     - yum-transport-https
+  #     - ca-certificates
+  #   sudo: yes
+
+  # - name: yum - add passenger repo
+  #   yum_repository: repo='deb https://oss-binaries.phusionpassenger.com/yum/passenger {{ ansible_lsb.codename }} main' state=present update_cache=yes
+  #   sudo: yes
+
+  # - name: pkg - install apache passenger packages
+  #   yum: pkg={{ item }} state={{ passenger_pkgs_state }}
+  #   with_items:
+  #    - libapache2-mod-passenger
+  #    - apache2
+  #   notify: apache restart
+  #   when: passenger_webserver == "apache"
+  #   sudo: yes
+
+  # - name: pkg - install standalone passenger packages
+  #   yum: pkg={{ item }} state={{ passenger_pkgs_state }}
+  #   with_items:
+  #    - passenger
+  #   sudo: yes
+
+  # - name: pkg - fix passenger utils shebang
+  #   lineinfile:
+  #     dest: "{{ item }}"
+  #     regexp: '^#\!/usr/bin/ruby\s*'
+  #     line: "#!/usr/bin/env ruby"
+  #     backrefs: yes
+  #     state: present
+  #   with_items:
+  #     - /usr/sbin/passenger-memory-stats
+  #     - /usr/sbin/passenger-status
+  #   sudo: yes
+
+  # - name: install passenger
+  #   shell: RBENV_ROOT={{ rbenv_root }} PATH="$RBENV_ROOT/bin:$PATH" rbenv exec gem install passenger -v 5.0.30
+  #   # gem: name=passenger state=present version=5.0.30
+  #   sudo: yes 
+
+  # - name: apache2 development headers
+  #   yum: pkg=apache2-dev
+  #   sudo: yes
+
+  # - name: ruby dev headers
+  #   yum: pkg=ruby-dev
+  #   sudo: yes
+
+  # - name: APR dev headers
+  #   yum: pkg=libapr1-dev
+  #   sudo: yes
+
+  # - name: curl dev headers
+  #   yum: pkg=libcurl4-openssl-dev
+  #   sudo: yes
+  
+  # - name: 'rbenv | change owner'
+  #   shell: 'chown -R ubuntu /home/ubuntu/.rbenv/versions/2.2.3/lib/ruby/gems/2.2.0'
+  #   sudo: yes
+
+  # - name: passgenger apache module
+  #   shell: passenger-install-apache2-module 
+
+  
+  - name: service - ensure nginx is running
+    service: name=nginx state=started enabled=yes
+    when: passenger_webserver == "nginx"
+    sudo: yes 
+
+  # - name: conf file
+  #   template: src="app.conf" dest="/etc/apache2/sites-available/app.conf"
+  #   sudo: yes

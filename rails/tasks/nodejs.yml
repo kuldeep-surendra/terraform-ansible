@@ -1,0 +1,22 @@
+# - name: NodeJS | Install ppa key
+#   apt_key: id=68576280 url=https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280 state=present
+#   sudo: yes
+# - name: NodeJS | Remove launchpad ppa
+#   apt_repository: repo=ppa:chris-lea/node.js state=absent
+#   sudo: yes
+# - name: NodeJS | Install ppa
+#   apt_repository: repo="{{ item }}"
+#   with_items:
+#     - "deb https://deb.nodesource.com/{{ nodejs_branch }} {{ ansible_distribution_release }} main"
+#     - "deb-src https://deb.nodesource.com/{{ nodejs_branch }} {{ ansible_distribution_release }} main"
+  # sudo: yes
+
+- name: epel-release
+  yum: name=epel-release
+  sudo: yes
+- name: NodeJS | Install package
+  yum: name=nodejs
+  sudo: yes
+# - name: 'install bower'
+#   npm: name=bower global=yes
+#   sudo: yes
